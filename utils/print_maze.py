@@ -26,3 +26,4 @@ def print_maze(maze):
     # Display the maze
     plt.imshow(maze_array, cmap=cmap)
     plt.axis('off')
+    plt.show()
