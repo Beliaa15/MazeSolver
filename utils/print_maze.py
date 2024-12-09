@@ -23,6 +23,6 @@ def print_maze(maze, ax=None):
     cmap = plt.cm.colors.ListedColormap(colors)
     
     # Display the maze and return the image object
-    img = ax.imshow(maze_array, cmap=cmap, interpolation='nearest')
+    ax.imshow(maze_array, cmap=cmap, interpolation='nearest')
     ax.axis('off')
-    return img
+    plt.show()

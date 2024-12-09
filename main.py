@@ -1,6 +1,5 @@
 import time
 import matplotlib.pyplot as plt
-from matplotlib.widgets import RadioButtons
 
 # Utils
 from utils.generate_grid import generate_grid
@@ -13,67 +12,53 @@ from algorithms.dfs_maze_solver import dfs_maze_solver
 from algorithms.bfs_maze_solver import bfs_maze_solver
 from algorithms.dijkstra_maze_solver import dijkstra_maze_solver
 from algorithms.astar_maze_solver import astar_maze_solver
-
-class MazePresentation:
-    def __init__(self):
-        self.m = 41
-        self.n = 41
-        self.solutions = self.generate_solutions()
-        
-    def generate_solutions(self):
-        maze = []
-        solutions = []
-
-        # Generate and prepare maze
-        maze = generate_grid(self.n, self.m, maze)
-        carve(maze)
-        modify(maze, self.m, self.n)
-
-        algorithms = [
-            ('DFS', dfs_maze_solver),
-            ('BFS', bfs_maze_solver),
-            ('Dijkstra', dijkstra_maze_solver),
-            ('A*', astar_maze_solver)
-        ]
-
-        for name, solver in algorithms:
-            maze_copy = [row[:] for row in maze]
-            start_time = time.time()
-            solver(maze_copy, [1, 1], [self.m-2, self.n-2])
-            execution_time = time.time() - start_time
-            solutions.append({
-                'maze': maze_copy,
-                'name': name,
-                'time': execution_time
-            })
-
-        return solutions
-
-    def show_solutions(self):
-        fig, ax = plt.subplots(figsize=(12, 10))
-        plt.subplots_adjust(left=0.2)  # space for radio buttons
-        
-        # radio buttons
-        rax = plt.axes([0.05, 0.4, 0.15, 0.15])  # [left, bottom, width, height]
-        radio = RadioButtons(rax, ['DFS', 'BFS', 'Dijkstra', 'A*'])
-        
-        def update_plot(label):
-            ax.clear()
-            index = next(i for i, sol in enumerate(self.solutions) if sol['name'] == label)
-            solution = self.solutions[index]
-            ax.set_title(f"{solution['name']} Solution\nExecution time: {solution['time']:.6f} seconds")
-            print_maze(solution['maze'], ax=ax)
-            plt.draw()
-        
-        # initial solution
-        update_plot('DFS')
-        radio.on_clicked(update_plot)
-        print("Plot changed")
-        plt.show()
+from algorithms.best_first_search import best_first_maze_solver
 
 def main():
-    presentation = MazePresentation()
-    presentation.show_solutions()
+
+  m = 41
+  n = 41
+  maze = []
+
+  maze = generate_grid(n, m, maze)
+  carve(maze)
+  modify(maze, m, n)
+
+  maze_for_dfs = maze.copy()
+  maze_for_bfs = maze.copy()
+  maze_for_dijkstra = maze.copy()
+  maze_for_astar = maze.copy()
+  maze_for_best_first = maze.copy()
+ 
+  start_time_dfs = time.time()
+  dfs_maze_solver(maze_for_dfs, [1, 1], [m-2, n-2])
+  print("Execution time DFS: %s seconds" % (time.time() - start_time_dfs))
+  plt.title("DFS Solution")
+  print_maze(maze_for_dfs)
+
+  start_time_bfs = time.time()
+  bfs_maze_solver(maze_for_bfs, [1, 1], [m-2, n-2])
+  print("Execution time BFS: %s seconds" % (time.time() - start_time_bfs))
+  plt.title("BFS Solution")
+  print_maze(maze_for_bfs)
+
+  start_time_dijkstra = time.time()
+  dijkstra_maze_solver(maze_for_dijkstra, [1, 1], [m-2, n-2])
+  print("Execution time Dijkstra: %s seconds" % (time.time() - start_time_dijkstra))
+  plt.title("Dijkstra Solution")
+  print_maze(maze_for_dijkstra)
+
+  start_time_a_estrella = time.time()
+  astar_maze_solver(maze_for_astar, [1, 1], [m-2, n-2])
+  print("Execution time A*: %s seconds" % (time.time() - start_time_a_estrella))
+  plt.title("A* Solution")
+  print_maze(maze_for_astar)
+
+  start_time_best_first = time.time()
+  best_first_maze_solver(maze_for_best_first, [1, 1], [m-2, n-2])
+  print("Execution time Best-First: %s seconds" % (time.time() - start_time_best_first))
+  plt.title("Best-First Solution")
+  print_maze(maze_for_best_first)
 
 if __name__ == "__main__":
-    main()
+  main()
