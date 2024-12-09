@@ -1,29 +1,28 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def print_maze(maze):
-    """
-    Displays the maze graphically using matplotlib
+def print_maze(maze, ax=None):
+    if ax is None:
+        ax = plt.gca()
     
-    :param maze: The maze to display
-    """
-    # Convert maze to numeric values for plotting
-    maze_array = np.zeros((len(maze), len(maze[0])))
+    # Convert maze characters to numerical values
+    maze_array = []
+    for row in maze:
+        maze_row = []
+        for cell in row:
+            if cell == '1':  # Wall
+                maze_row.append(0.5)  # Black
+            elif cell == '2':  # Path
+                maze_row.append(0)  # Green
+            else:  # Empty space or other characters
+                maze_row.append(1)  # White
+        maze_array.append(maze_row)
     
-    for i in range(len(maze)):
-        for j in range(len(maze[0])):
-            if maze[i][j] == '0':  # Wall
-                maze_array[i][j] = 0
-            elif maze[i][j] == '1':  # Path
-                maze_array[i][j] = 1
-            elif maze[i][j] == '2':  # Solution path
-                maze_array[i][j] = 2
-
-    # Create color map
-    colors = ['black', 'white', 'green']
+    # Create custom colormap: black for walls, white for paths, green for solution
+    colors = ['green', 'white', 'black']
     cmap = plt.cm.colors.ListedColormap(colors)
-
-    # Display the maze
-    plt.imshow(maze_array, cmap=cmap)
-    plt.axis('off')
-    plt.show()
+    
+    # Display the maze and return the image object
+    img = ax.imshow(maze_array, cmap=cmap, interpolation='nearest')
+    ax.axis('off')
+    return img
