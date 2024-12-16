@@ -1,32 +1,20 @@
-from utils.get_neighbours import get_neighbours
-
 def get_neighbours_for_search(maze, i, j, visited):
-  """
-  It returns the neighbours of a given cell in the maze, 
-  but only if the cell is not a wall
-  
-  :param maze: The maze we're working with
-  :param i: the current row
-  :param j: column
-  :param visited: a list of tuples that represent the coordinates of the cells that have been visited
-  :return: A list of tuples.
-  """
+    """
+    Returns a list of valid neighbours for the BFS algorithm.
+    
+    :param maze: The maze we're trying to solve
+    :param i: the current row
+    :param j: the column of the current cell
+    :param visited: a set of all the cells that have been visited
+    :return: A list of neighbours that have not been visited.
+    """
+    neighbours = []
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
 
-  partial_neighbours = get_neighbours(maze, i, j, visited)
-  neighbours = []
+    for di, dj in directions:
+        ni, nj = i + di, j + dj
+        if 0 <= ni < len(maze) and 0 <= nj < len(maze[0]) and (ni, nj) not in visited:
+            if maze[i + di][j + dj] == '1':  # Ensure there's a path
+                neighbours.append((ni, nj))
 
-  for neighbour in partial_neighbours:
-    if neighbour[0] == i and neighbour[1] == j + 2 :
-      if maze[i][j+1] == '1':
-        neighbours.append(neighbour)
-    elif neighbour[0] == i and neighbour[1] == j - 2:
-      if maze[i][j-1] == '1':
-        neighbours.append(neighbour)
-    elif neighbour[0] == i + 2 and neighbour[1] == j:
-      if maze[i+1][j] == '1':
-        neighbours.append(neighbour)
-    elif neighbour[0] == i - 2 and neighbour[1] == j:
-      if maze[i-1][j] == '1':
-        neighbours.append(neighbour)
-
-  return neighbours
+    return neighbours

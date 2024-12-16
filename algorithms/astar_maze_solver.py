@@ -1,6 +1,5 @@
 import math
 from utils.get_neighbours_for_astar import get_neighbours_for_astar
-from utils.sort_dictionary import sort_dictionary
 
 def astar_maze_solver(maze, start, end):
     """
@@ -10,20 +9,19 @@ def astar_maze_solver(maze, start, end):
     :param start: (1, 1)
     :param end: the end point of the maze
     """
-
     path = []
-    visited = []
+    visited = set()
     queue = {}
 
     # Create a dictionary with the distance from start to each node
-    distance = { (i, j): math.inf for i in range(len(maze)) if i % 2 != 0 for j in range(len(maze)) if j % 2 != 0 }
+    distance = { (i, j): math.inf for i in range(len(maze)) for j in range(len(maze[0])) if maze[i][j] != '0' }
     distance[tuple(start)] = 0
 
     # Create a dictionary with the heuristic estimates
-    heuristic = { (i, j): abs(end[0] - i) + abs(end[1] - j) for i in range(len(maze)) if i % 2 != 0 for j in range(len(maze)) if j % 2 != 0 }
+    heuristic = { (i, j): abs(end[0] - i) + abs(end[1] - j) for i in range(len(maze)) for j in range(len(maze[0])) if maze[i][j] != '0' }
 
     # Create a dictionary to store the previous nodes
-    prev_nodes = { (i, j): None for i in range(len(maze)) if i % 2 != 0 for j in range(len(maze)) if j % 2 != 0 }
+    prev_nodes = { (i, j): None for i in range(len(maze)) for j in range(len(maze[0])) if maze[i][j] != '0' }
     
     actual = start
     queue[tuple(start)] = 0
@@ -34,7 +32,7 @@ def astar_maze_solver(maze, start, end):
             break
         
         current_weight = distance[actual]
-        neighbours = get_neighbours_for_astar(maze, actual[0], actual[1], visited, heuristic)
+        neighbours = get_neighbours_for_astar(maze, actual[0], actual[1], visited)
         coordinates_neighbours = list(neighbours.keys())
         
         for neighbour in coordinates_neighbours:
@@ -45,7 +43,7 @@ def astar_maze_solver(maze, start, end):
                     prev_nodes[neighbour] = actual
                     queue[neighbour] = tentative_distance
         
-        visited.append(actual)
+        visited.add(actual)
         del queue[actual]
 
     actual = tuple(end)

@@ -6,7 +6,6 @@ from utils.carve import carve
 from utils.modify import modify
 from algorithms.dfs_maze_solver import dfs_maze_solver
 from algorithms.bfs_maze_solver import bfs_maze_solver
-from algorithms.dijkstra_maze_solver import dijkstra_maze_solver
 from algorithms.astar_maze_solver import astar_maze_solver
 from algorithms.best_first_search import best_first_maze_solver
 from algorithms.ucs_maze_solver import ucs_maze_solver
@@ -142,8 +141,6 @@ class MazeSolverGUI:
             dfs_maze_solver(maze_copy, self.start_point, self.end_point)
         elif self.algorithm.get() == "BFS":
             bfs_maze_solver(maze_copy, self.start_point, self.end_point)
-        elif self.algorithm.get() == "Dijkstra":
-            dijkstra_maze_solver(maze_copy, self.start_point, self.end_point)
         elif self.algorithm.get() == "A*":
             astar_maze_solver(maze_copy, self.start_point, self.end_point)
         elif self.algorithm.get() == "Best-First":

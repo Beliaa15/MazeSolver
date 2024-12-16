@@ -15,7 +15,7 @@ def get_neighbours_for_best_first(maze, i, j, visited):
         ni, nj = i + di, j + dj
         if 0 <= ni < len(maze) and 0 <= nj < len(maze[0]) and (ni, nj) not in visited:
             # Check if the cell between the current cell and the neighbour is a path
-            if maze[i + di // 2][j + dj // 2] == '1':  # Ensure there's a path
+            if maze[i + di // 2][j + dj // 2] == '1' and maze[i + di][j + dj] == '1':  # Ensure there's a path
                 neighbours.append((ni, nj))
 
     return neighbours

@@ -1,56 +1,48 @@
-import random
 from utils.get_neighbours_for_search import get_neighbours_for_search
 
 def dfs_maze_solver(maze, start, end):
-  """
-  It takes a maze, a start and an end, and returns a solved maze
-  
-  :param maze: The maze to be solved
-  :param start: The starting point of the maze
-  :param end: The end point of the maze
-  """
-  
-  visited = []
-  stack = []
-  neighbours = []
-  
-  actual = start
-  
-  while True:
-    visited.append(actual)
-  
-    # Obtener neighbours
-    neighbours = get_neighbours_for_search(maze, actual[0], actual[1], visited)
+    """
+    Solves the maze using the Depth-First Search algorithm.
+    
+    :param maze: The maze to be solved
+    :param start: Starting point (row, column)
+    :param end: Ending point (row, column)
+    :return: The maze with the path marked
+    """
+    visited = set()
+    path = []
+    stack = [tuple(start)]
+    prev_nodes = {}
 
-    if neighbours:
-      neighbour = random.choice(neighbours)
-      visited.append(neighbour)
-      stack.append(actual)
-      actual = neighbour
-  
-    else:
-      if stack:
-        actual = stack.pop()
-      else:
-        break
-  
-    if actual == end:
-      break
+    while stack:
+        current = stack.pop()
+        
+        if current in visited:
+            continue
+            
+        visited.add(current)
+        
+        if current == tuple(end):
+            break
+            
+        neighbours = get_neighbours_for_search(maze, current[0], current[1], visited)
+        
+        for neighbour in neighbours:
+            if neighbour not in visited:
+                stack.append(neighbour)
+                prev_nodes[neighbour] = current
 
-  for i in range(len(visited)):
-    if i < len(visited)-1:
-      actual = visited[i]
-      next = visited[i+1]
-      # Obtener la coordenada entre visited[i] y visited[i+1]
-      if actual[0] == next[0]:
-        if actual[1] < next[1]:
-          maze[actual[0]][actual[1]+1] = '2'
-        elif actual[1] > next[1]:
-          maze[actual[0]][actual[1]-1] = '2'
-      elif actual[1] == next[1]:
-        if actual[0] < next[0]:
-          maze[actual[0]+1][actual[1]] = '2'
-        elif actual[0] > next[0]:
-          maze[actual[0]-1][actual[1]] = '2'
+    # Reconstruct path
+    current = tuple(end)
+    while current in prev_nodes:
+        path.append(current)
+        current = prev_nodes[current]
+    
+    path.append(tuple(start))
+    path.reverse()
 
-    maze[visited[i][0]][visited[i][1]] = '2'
+    # Mark the path
+    for (x, y) in path:
+        maze[x][y] = '2'
+
+    return maze

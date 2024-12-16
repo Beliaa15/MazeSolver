@@ -1,25 +1,25 @@
-from utils.get_neighbours_for_search import get_neighbours_for_search
+def get_neighbours_for_astar(maze, i, j, visited):
+    """
+    It returns the neighbours of a given cell in the maze, 
+    but only if the cell is not a wall and has not been visited
+    
+    :param maze: The maze we're working with
+    :param i: the current row
+    :param j: column
+    :param visited: a set of tuples that represent the coordinates of the cells that have been visited
+    :return: A dictionary of tuples with their coordinates as keys and a distance of 1 as value.
+    """
 
-def get_neighbours_for_astar(maze, i, j, visited, heuristic):
-  """
-  It returns a dictionary of neighbours of the current cell, with the keys being the coordinates of
-  the neighbours and the values being the weights of the neighbours
-  
-  :param maze: The maze we're searching
-  :param i: the row index of the current cell
-  :param j: the column of the current cell
-  :param visited: a list of tuples of the form (i, j) that represent the coordinates of the cells that
-  have already been visited
-  :param heuristic: a dictionary of tuples (i, j) to the heuristic value of that cell
-  :return: A dictionary of the neighbours of the current node, with the key being the neighbour and
-  the value being the weight of the edge between the current node and the neighbour.
-  """
+    neighbours = {}
+    rows, cols = len(maze), len(maze[0])
 
-  neighbours = get_neighbours_for_search(maze, i, j, visited)
-  
-  weighted_neighbours = {}
+    if i > 0 and maze[i - 1][j] != '0' and (i - 1, j) not in visited:
+        neighbours[(i - 1, j)] = 1
+    if i < rows - 1 and maze[i + 1][j] != '0' and (i + 1, j) not in visited:
+        neighbours[(i + 1, j)] = 1
+    if j > 0 and maze[i][j - 1] != '0' and (i, j - 1) not in visited:
+        neighbours[(i, j - 1)] = 1
+    if j < cols - 1 and maze[i][j + 1] != '0' and (i, j + 1) not in visited:
+        neighbours[(i, j + 1)] = 1
 
-  for neighbour in neighbours:
-    weighted_neighbours[tuple(neighbour)] = 2 + heuristic[tuple(neighbour)]
-  
-  return weighted_neighbours
+    return neighbours
