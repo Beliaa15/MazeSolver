@@ -42,7 +42,7 @@ class MazeSolverGUI:
         # Algorithm selection
         ttk.Label(control_frame, text="Algorithm:").pack(side=tk.LEFT, padx=5)
         self.algorithm = tk.StringVar(value="DFS")
-        algorithms = ["DFS", "BFS", "Dijkstra", "A*", "Best-First", "UCS"]
+        algorithms = ["DFS", "BFS", "A*", "Best-First", "UCS"]
         algo_menu = ttk.Combobox(control_frame, textvariable=self.algorithm, values=algorithms)
         algo_menu.pack(side=tk.LEFT, padx=5)
         
@@ -116,6 +116,8 @@ class MazeSolverGUI:
                     color = 'black'
                 elif maze[i][j] == '2':
                     color = 'green'
+                elif maze[i][j] == '3':
+                    color = 'violet'
                 else:
                     color = 'white'
                     

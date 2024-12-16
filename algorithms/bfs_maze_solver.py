@@ -23,6 +23,7 @@ def bfs_maze_solver(maze, start, end):
             continue
             
         visited.add(current)
+        maze[current[0]][current[1]] = '3'  # Mark visited cells with '3'
         
         if current == tuple(end):
             break

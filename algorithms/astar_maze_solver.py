@@ -44,6 +44,7 @@ def astar_maze_solver(maze, start, end):
                     queue[neighbour] = tentative_distance
         
         visited.add(actual)
+        maze[actual[0]][actual[1]] = '3'  # Mark visited cells with '3'
         del queue[actual]
 
     actual = tuple(end)

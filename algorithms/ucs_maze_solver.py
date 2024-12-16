@@ -1,5 +1,6 @@
 import heapq
 from utils.get_neighbours_for_best_first import get_neighbours_for_best_first
+
 def ucs_maze_solver(maze, start, end):
     """
     Solves the maze using the Uniform Cost Search algorithm.
@@ -28,7 +29,8 @@ def ucs_maze_solver(maze, start, end):
             continue  # Skip if already visited
         
         visited.add(actual)  # Mark the node as visited
-        
+        maze[actual[0]][actual[1]] = '3'  # Mark visited cells with '3'
+
         if actual == tuple(end):
             break  # Exit if we reached the end
         
