@@ -29,7 +29,6 @@ def ucs_maze_solver(maze, start, end):
             continue  # Skip if already visited
         
         visited.add(actual)  # Mark the node as visited
-        maze[actual[0]][actual[1]] = '3'  # Mark visited cells with '3'
 
         if actual == tuple(end):
             break  # Exit if we reached the end
@@ -52,7 +51,11 @@ def ucs_maze_solver(maze, start, end):
 
     path.append(tuple(start))  # Add the start node
     path.reverse()  # Reverse the path to get it from start to end
-
+    
+    # Optionally mark visited cells for visualization
+    for (x, y) in visited:
+        maze[x][y] = '3'  # Use '3' to represent visited cells
+    
     # Mark the path in the maze with '2'
     for (x, y) in path:
         maze[x][y] = '2'  # Use '2' to represent the path

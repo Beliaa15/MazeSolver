@@ -9,6 +9,7 @@ from algorithms.bfs_maze_solver import bfs_maze_solver
 from algorithms.astar_maze_solver import astar_maze_solver
 from algorithms.best_first_search import best_first_maze_solver
 from algorithms.ucs_maze_solver import ucs_maze_solver
+from algorithms.ids_maze_solver import ids_maze_solver
 import time
 
 class MazeSolverGUI:
@@ -42,7 +43,7 @@ class MazeSolverGUI:
         # Algorithm selection
         ttk.Label(control_frame, text="Algorithm:").pack(side=tk.LEFT, padx=5)
         self.algorithm = tk.StringVar(value="DFS")
-        algorithms = ["DFS", "BFS", "A*", "Best-First", "UCS"]
+        algorithms = ["DFS", "BFS", "A*", "Best-First", "UCS", "IDS"]
         algo_menu = ttk.Combobox(control_frame, textvariable=self.algorithm, values=algorithms)
         algo_menu.pack(side=tk.LEFT, padx=5)
         
@@ -147,6 +148,8 @@ class MazeSolverGUI:
             astar_maze_solver(maze_copy, self.start_point, self.end_point)
         elif self.algorithm.get() == "Best-First":
             best_first_maze_solver(maze_copy, self.start_point, self.end_point)
+        elif self.algorithm.get() == "IDS":
+            ids_maze_solver(maze_copy, self.start_point, self.end_point)    
         else:
             ucs_maze_solver(maze_copy, self.start_point, self.end_point)
             
